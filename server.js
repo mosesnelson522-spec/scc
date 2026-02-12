@@ -203,7 +203,6 @@ app.get('/api/get-messages/:sessionId', async (req, res) => {
 // Upgrade HTTP to WebSocket for real-time updates
 const server = app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log('⚠️  Remember to set BOT_TOKEN and TICKETS_CATEGORY_ID!');
 });
 
 server.on('upgrade', (request, socket, head) => {
