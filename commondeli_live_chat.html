@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Deli - Save 70% on UberEats Orders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .logo span {
+            color: #dc2626;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            color: #1f2937;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .chat-box {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            background: #667eea;
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .chat-header h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .chat-status {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .chat-status.connected {
+            color: #10b981;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f9fafb;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.customer {
+            align-items: flex-end;
+        }
+
+        .message.chef, .message.bot {
+            align-items: flex-start;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            word-wrap: break-word;
+        }
+
+        .message.customer .message-content {
+            background: #667eea;
+            color: white;
+        }
+
+        .message.chef .message-content {
+            background: white;
+            border: 2px solid #e5e7eb;
+            color: #1f2937;
+        }
+
+        .message.bot .message-content {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            color: #78350f;
+        }
+
+        .message-author {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .chat-input-container {
+            padding: 20px;
+            border-top: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .chat-input-form {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+
+        .chat-send-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chat-send-btn:hover {
+            background: #5568d3;
+        }
+
+        .chat-send-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .order-summary {
+            background: #eff6ff;
+            border: 2px solid #bfdbfe;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .order-summary h3 {
+            color: #1e40af;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .order-summary p {
+            color: #1e40af;
+            font-size: 13px;
+            margin: 4px 0;
+        }
+
+        @media (max-width: 768px) {
+            .chat-box {
+                height: calc(100vh - 140px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">COMMON <span>DELI</span></div>
+            <div style="color: #667eea; font-weight: 600;">Save 70% on Every Order</div>
+        </div>
+
+        <!-- Order Form -->
+        <div id="orderSection">
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <h2 class="form-title">Place Your Order</h2>
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label for="customerName">Your Name *</label>
+                        <input type="text" id="customerName" required placeholder="John Doe" value="Test User">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="discordUsername">Discord Username *</label>
+                        <input type="text" id="discordUsername" required placeholder="username#1234" value="testuser">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="groupLink">Uber Eats Group Link *</label>
+                        <input type="url" id="groupLink" required placeholder="https://ubereats.com/group/...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deliveryNotes">Delivery Notes (optional)</label>
+                        <textarea id="deliveryNotes" placeholder="Any special delivery instructions..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="aptInstructions">Apt/Unit/Instructions (optional)</label>
+                        <input type="text" id="aptInstructions" placeholder="Apt 4B, etc.">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipAmount">Tip Amount (optional)</label>
+                        <input type="text" id="tipAmount" placeholder="e.g., 5 or 5.50">
+                    </div>
+
+                    <button type="submit" class="btn" id="submitBtn">Submit Order & Start Chat</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Chat Interface -->
+        <div id="chatSection" class="hidden">
+            <div class="chat-container">
+                <div class="chat-box">
+                    <div class="chat-header">
+                        <h2>💬 Live Chat with Chef</h2>
+                        <div class="chat-status" id="chatStatus">Connected to Discord</div>
+                    </div>
+
+                    <div class="messages-container" id="messagesContainer">
+                        <div class="order-summary">
+                            <h3>📋 Your Order</h3>
+                            <p id="orderSummary"></p>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <form class="chat-input-form" id="chatForm">
+                            <input type="text" class="chat-input" id="messageInput" placeholder="Type your message..." required>
+                            <button type="submit" class="chat-send-btn">Send</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000'; // Change this to your server URL
+        
+        let sessionId = null;
+        let customerName = '';
+        let pollingInterval = null;
+
+        // Submit order
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating ticket...';
+
+            customerName = document.getElementById('customerName').value;
+            
+            const orderData = {
+                customerName,
+                discordUsername: document.getElementById('discordUsername').value,
+                groupLink: document.getElementById('groupLink').value,
+                deliveryNotes: document.getElementById('deliveryNotes').value,
+                aptInstructions: document.getElementById('aptInstructions').value,
+                tipAmount: document.getElementById('tipAmount').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/create-order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (!response.ok) throw new Error('Failed to create order');
+
+                const data = await response.json();
+                sessionId = data.sessionId;
+
+                // Show chat interface
+                showChatInterface(orderData);
+                
+                // Start polling for messages
+                startPolling();
+
+            } catch (error) {
+                alert('Error creating order: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Order & Start Chat';
+            }
+        });
+
+        function showChatInterface(orderData) {
+            document.getElementById('orderSection').classList.add('hidden');
+            document.getElementById('chatSection').classList.remove('hidden');
+            
+            // Show order summary
+            let summary = `🔗 ${orderData.groupLink}`;
+            if (orderData.deliveryNotes) summary += `\n📝 ${orderData.deliveryNotes}`;
+            if (orderData.aptInstructions) summary += `\n🏠 ${orderData.aptInstructions}`;
+            if (orderData.tipAmount) summary += `\n💵 Tip: $${orderData.tipAmount}`;
+            
+            document.getElementById('orderSummary').textContent = summary;
+
+            // Add system message
+            addMessage('bot', 'System', '✅ Your ticket has been created in Discord! A chef will respond shortly.');
+        }
+
+        // Send message
+        document.getElementById('chatForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (!message || !sessionId) return;
+
+            // Add to UI immediately
+            addMessage('customer', customerName, message);
+            messageInput.value = '';
+
+            // Send to Discord
+            try {
+                await fetch(`${API_URL}/api/send-message`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId, message })
+                });
+            } catch (error) {
+                console.error('Error sending message:', error);
+                alert('Failed to send message');
+            }
+        });
+
+        // Poll for new messages from Discord
+        function startPolling() {
+            pollingInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`${API_URL}/api/get-messages/${sessionId}`);
+                    if (!response.ok) return;
+
+                    const data = await response.json();
+                    
+                    data.messages.forEach(msg => {
+                        const type = msg.isBot ? 'bot' : 'chef';
+                        addMessage(type, msg.author, msg.content, msg.id);
+                    });
+
+                } catch (error) {
+                    console.error('Error polling messages:', error);
+                }
+            }, 2000); // Poll every 2 seconds
+        }
+
+        // Track displayed message IDs to avoid duplicates
+        const displayedMessages = new Set();
+
+        function addMessage(type, author, content, id = null) {
+            // Avoid duplicates
+            if (id && displayedMessages.has(id)) return;
+            if (id) displayedMessages.add(id);
+
+            const messagesContainer = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="message-author">${author}</div>
+                <div class="message-content">${content}</div>
+                <div class="message-time">${time}</div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Stop polling when page closes
+        window.addEventListener('beforeunload', () => {
+            if (pollingInterval) clearInterval(pollingInterval);
+        });
+    </script>
+</body>
+</html>
