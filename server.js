@@ -9,9 +9,9 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = 3000;
-const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE'; // Your Discord bot token
-const GUILD_ID = '854340642276900884'; // Common Deli server ID
-const TICKETS_CATEGORY_ID = 'YOUR_TICKETS_CATEGORY_ID'; // Get this from Discord
+const BOT_TOKEN = 'MTQ2NjYwMjE1ODQxMjc5NTkwNA.G5dMaZ.je1XK4bgI8gvMeV1XAqISDCa5SkNUaMv0Ov_gk';
+const GUILD_ID = '854340642276900884';
+const TICKETS_CATEGORY_ID = '1469496809255600151';
 
 // Store active chat sessions
 const activeSessions = new Map();
