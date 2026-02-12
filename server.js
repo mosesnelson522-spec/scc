@@ -5,7 +5,11 @@ const WebSocket = require('ws');
 const fetch = require('node-fetch');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
 
 const PORT = 3000;
@@ -18,6 +22,11 @@ const activeSessions = new Map();
 
 // WebSocket server for real-time chat
 const wss = new WebSocket.Server({ noServer: true });
+
+// Test endpoint
+app.get('/', (req, res) => {
+    res.json({ status: 'Server is running!', message: 'Common Deli API is live' });
+});
 
 // Create Discord ticket and webhook
 app.post('/api/create-order', async (req, res) => {
